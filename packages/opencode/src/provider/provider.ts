@@ -842,13 +842,13 @@ export namespace Provider {
       })
     }
 
-    // load apikeys
+    // load apikeys and oauth providers
     for (const [providerID, provider] of Object.entries(await Auth.all())) {
       if (disabled.has(providerID)) continue
-      if (provider.type === "api") {
+      if (provider.type === "api" || provider.type === "oauth") {
         mergeProvider(providerID, {
-          source: "api",
-          key: provider.key,
+          source: provider.type,
+          key: provider.type === "api" ? provider.key : undefined,
         })
       }
     }
